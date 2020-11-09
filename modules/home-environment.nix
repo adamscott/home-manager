@@ -574,7 +574,7 @@ in
         inherit (cfg) extraOutputsToInstall;
 
         # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
-        inherit lib.debug.traceVal postBuild;
+        postBuild = lib.debug.traceVal postBuild;
 
         meta = {
           description = "Environment of packages installed through home-manager";
