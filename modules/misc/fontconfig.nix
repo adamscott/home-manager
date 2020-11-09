@@ -80,7 +80,9 @@ in {
       echo "$out/lib/fontconfig/hm-dummy?" >&2;
 
       if test -f "$out/lib/fontconfig/hm-dummy?"; then
-        echo "$out/lib/fontconfig/hm-dummy? exists."
+        echo "$out/lib/fontconfig/hm-dummy? exists." >&2;
+      else
+        echo "NOOOOOOOOPE" >&2;
       fi
 
       rm $out/lib/fontconfig/hm-dummy?
