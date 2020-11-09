@@ -564,7 +564,7 @@ in
     home.path =
     let
       splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] cfg.extraProfileCommands;
-      splitReal = builtins.concatStringSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
+      splitReal = builtins.concatStringsSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
       postBuild = lib.debug.traceVal builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] splitReal;
     in 
       pkgs.buildEnv {
