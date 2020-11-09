@@ -561,22 +561,23 @@ in
             ${cfg.extraBuilderCommands}
           '';
 
-    home.path = pkgs.buildEnv
     let
       splitSafe = builtins.replaceStrings ["\\\n" "@@@@@n@@@@@"] cfg.extraProfileCommands;
       splitReal = builtins.concatStringSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
       postBuild = builtins.replaceStrings ["@@@@@n@@@@@" "\\\n"] postBuild;
     in {
-      name = "home-manager-path";
+      home.path = pkgs.buildEnv {
+        name = "home-manager-path";
 
-      paths = cfg.packages;
-      inherit (cfg) extraOutputsToInstall;
+        paths = cfg.packages;
+        inherit (cfg) extraOutputsToInstall;
 
-      # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
-      inherit postBuild;
+        # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
+        inherit postBuild;
 
-      meta = {
-        description = "Environment of packages installed through home-manager";
+        meta = {
+          description = "Environment of packages installed through home-manager";
+        };
       };
     };
   };
