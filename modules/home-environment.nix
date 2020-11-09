@@ -567,7 +567,7 @@ in
       paths = cfg.packages;
       inherit (cfg) extraOutputsToInstall;
 
-      postBuild = ""; # cfg.extraProfileCommands;
+      postBuild = cfg.extraProfileCommands;
 
       meta = {
         description = "Environment of packages installed through home-manager";
