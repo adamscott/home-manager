@@ -564,9 +564,9 @@ in
     home.path =
     let
       splitEOF1 = builtins.split "<< EOF" cfg.extraProfileCommands;
-      splitEOF2 = builtins.split "\nEOF" (builtins.tail splitEOF1);
+      splitEOF2 = builtins.split "\nEOF" (builtins.last splitEOF1);
       EOFContent = builtins.head splitEOF2;
-      splitReplace = lib.concatStrings [ (builtins.head splitEOF1) "EOFCONTENT" (builtins.tail splitEOF2) ];
+      splitReplace = lib.concatStrings [ (builtins.head splitEOF1) "EOFCONTENT" (builtins.last splitEOF2) ];
 
       splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] splitReplace;
       splitReal = lib.concatImapStrings (pos: x: "\n echo '${toString pos}' >&2; \n ${x} \n") (lib.splitString "\n" splitSafe);
