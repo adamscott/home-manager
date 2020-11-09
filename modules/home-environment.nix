@@ -567,7 +567,7 @@ in
       paths = cfg.packages;
       inherit (cfg) extraOutputsToInstall;
 
-      postBuild = cfg.extraProfileCommands;
+      postBuild = builtins.concatStringsSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" cfg.extraProfileCommands);
 
       meta = {
         description = "Environment of packages installed through home-manager";
