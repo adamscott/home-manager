@@ -78,6 +78,11 @@ in {
 
       # Remove hacky dummy files.
       echo "$out/lib/fontconfig/hm-dummy?" >&2;
+
+      if test -f "$out/lib/fontconfig/hm-dummy?"; then
+        echo "$out/lib/fontconfig/hm-dummy? exists."
+      fi
+
       rm $out/lib/fontconfig/hm-dummy?
       rmdir --ignore-fail-on-non-empty -p $out/lib/fontconfig
     '';
