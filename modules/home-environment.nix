@@ -572,7 +572,7 @@ in
       splitReal = lib.concatImapStrings (pos: x: "\n echo '${toString pos}' >&2; \n ${x} \n") (lib.splitString "\n" splitSafe);
       beforeReplaceEOF = lib.debug.traceVal builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] splitReal;
 
-      postBuild = builtins.replaceStrings ["EOFCONTENT"] ["<< EOF\n" + EOFContent + "\nEOF\n"] beforeReplaceEOF;
+      postBuild = builtins.replaceStrings ["EOFCONTENT"] [("<< EOF\n" + EOFContent + "\nEOF\n")] beforeReplaceEOF;
     in 
       pkgs.buildEnv {
         name = "home-manager-path";
