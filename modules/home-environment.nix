@@ -563,9 +563,16 @@ in
 
     home.path =
     let
-      # splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] cfg.extraProfileCommands;
-      # splitReal = lib.concatImapStrings (pos: x: "\n echo '${toString pos}' >&2; \n ${x} \n") (lib.splitString "\n" splitSafe);
-      # postBuild = lib.debug.traceVal builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] splitReal;
+      splitEOF1 = builtins.split "<< EOF" cfg.extraProfileCommands;
+      splitEOF2 = builtins.split "\nEOF" (builtins.tail splitEOF1)
+      EOFContent = builtins.head splitEOF2
+      splitReplace = lib.concatStrings [ (builtins.head splitEOF1) "EOFCONTENT" (builtins.tail splitEOF2) ];
+
+      splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] splitReplace;
+      splitReal = lib.concatImapStrings (pos: x: "\n echo '${toString pos}' >&2; \n ${x} \n") (lib.splitString "\n" splitSafe);
+      beforeReplaceEOF = lib.debug.traceVal builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] splitReal;
+
+      postBuild = builtins.replaceStrings ["EOFCONTENT"] [EOFContent] beforeReplaceEOF;
     in 
       pkgs.buildEnv {
         name = "home-manager-path";
@@ -575,7 +582,7 @@ in
 
         # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
         # inherit postBuild;
-        postBuild = cfg.extraProfileCommands;
+        inherit postBuild;
 
         meta = {
           description = "Environment of packages installed through home-manager";
