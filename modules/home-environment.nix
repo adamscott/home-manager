@@ -565,7 +565,7 @@ in
     let
       splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] cfg.extraProfileCommands;
       splitReal = builtins.concatStringSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
-      postBuild = builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] postBuild;
+      postBuild = lib.debug.traceVal builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] splitReal;
     in 
       pkgs.buildEnv {
         name = "home-manager-path";
@@ -574,7 +574,7 @@ in
         inherit (cfg) extraOutputsToInstall;
 
         # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
-        postBuild = lib.debug.traceVal postBuild;
+        inherit postBuild;
 
         meta = {
           description = "Environment of packages installed through home-manager";
