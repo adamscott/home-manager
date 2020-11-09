@@ -561,12 +561,13 @@ in
             ${cfg.extraBuilderCommands}
           '';
 
+    home.path =
     let
       splitSafe = builtins.replaceStrings ["\\\n" "@@@@@n@@@@@"] cfg.extraProfileCommands;
       splitReal = builtins.concatStringSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
       postBuild = builtins.replaceStrings ["@@@@@n@@@@@" "\\\n"] postBuild;
-    in {
-      home.path = pkgs.buildEnv {
+    in 
+      pkgs.buildEnv {
         name = "home-manager-path";
 
         paths = cfg.packages;
@@ -579,6 +580,6 @@ in
           description = "Environment of packages installed through home-manager";
         };
       };
-    };
+    
   };
 }
