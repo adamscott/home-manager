@@ -577,7 +577,7 @@ in
       pkgs.buildEnv {
         name = "home-manager-path";
 
-        paths = cfg.packages;
+        paths = lib.debug.traceVal cfg.packages;
         inherit (cfg) extraOutputsToInstall;
 
         # postBuild = builtins.concatStringsSep " \n echo '=> sep!' >2&; \n" (lib.splitString " \n" cfg.extraProfileCommands);
