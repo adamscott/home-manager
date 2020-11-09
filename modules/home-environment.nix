@@ -563,9 +563,9 @@ in
 
     home.path =
     let
-      splitSafe = builtins.replaceStrings ["\\\n" "@@@@@n@@@@@"] cfg.extraProfileCommands;
+      splitSafe = builtins.replaceStrings ["\\\n"] ["@@@@@n@@@@@"] cfg.extraProfileCommands;
       splitReal = builtins.concatStringSep "\n echo '=> sep!' >2&; \n" (lib.splitString "\n" splitSafe);
-      postBuild = lib.debug.traceVal (builtins.replaceStrings ["@@@@@n@@@@@" "\\\n"] postBuild);
+      postBuild = lib.debug.traceVal (builtins.replaceStrings ["@@@@@n@@@@@"] ["\\\n"] postBuild);
     in 
       pkgs.buildEnv {
         name = "home-manager-path";
